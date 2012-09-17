@@ -1,7 +1,7 @@
 apply plugin: "java"
 // HA
-version: "$version$"
-group: "$group$"
+version = "$version$"
+group = "$group$"
 
 def gradleWrapperVersion = "$gradle_version$"
 

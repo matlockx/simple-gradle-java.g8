@@ -103,7 +103,7 @@ configurations {
 
 test {
     if (project.ext.useCodeCoverage) {
-        apply from: "${projectDir}/cobertura.gradle"
+        apply from: "\${projectDir}/cobertura.gradle"
     }
 
 
@@ -114,8 +114,8 @@ test {
     }
 
     // only apply bdd task when features are available
-    if(new File("${projectDir}/src/bdd-test/resources").exists()){
-        apply from: "${projectDir}/bdd.gradle"
+    if(new File("\${projectDir}/src/bdd-test/resources").exists()){
+        apply from: "\${projectDir}/bdd.gradle"
     }
 
 

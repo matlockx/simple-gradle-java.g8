@@ -6,9 +6,9 @@ configurations{ coberturaRuntime {extendsFrom testRuntime } }
 
 dependencies { coberturaRuntime 'net.sourceforge.cobertura:cobertura:' +  libraryVersions.cobertura}
 
-def serFile="${project.buildDir}/cobertura.ser"
-def classes="${project.sourceSets.main.output.classesDir}"
-def classesCopy="${classes}-copy"
+def serFile="\${project.buildDir}/cobertura.ser"
+def classes="\${project.sourceSets.main.output.classesDir}"
+def classesCopy="\${classes}-copy"
 
 
 test {
@@ -34,7 +34,7 @@ test {
     doLast{
         if (new File(classesCopy).exists()) {
             logger.info "ClassDir " + new File(classesCopy).canonicalPath + " " + project.name
-            ant.'cobertura-report'(destdir:"${project.reporting.baseDir}/cobertura",
+            ant.'cobertura-report'(destdir:"\${project.reporting.baseDir}/cobertura",
                     format:'xml', srcdir:"src/main/java", datafile: serFile)
 
             ant.delete(file: classes)

@@ -18,6 +18,9 @@ project.ext.useBddTests = project.hasProperty('bddTest') && ['on', 'true'].conta
 project.ext.useCodeCoverage = project.hasProperty('coverage') && ['on', 'true'].contains(project.properties.coverage)
 project.ext.useFindbugs = project.hasProperty('findbugs') && ['on', 'true'].contains(project.properties.findbugs) && !(project.hasProperty('ignoreFindbugs'))
 
+if(project.ext.useFindbugs)
+    apply plugin: 'findbugs'
+
 def gradleWrapperVersion = "$gradle_version$"
 task wrapper(type: Wrapper) { gradleVersion = gradleWrapperVersion }
 
@@ -43,7 +46,7 @@ project.ext.libraryVersions = [
 
 dependencies{    
     compile 'ch.qos.logback:logback-core:' + libraryVersions.logback
-    compile 'org.slf4j:slf4j-api:' + libraryVersions.slf4j
+    compile 'ch.qos.logback:logback-classic:' + libraryVersions.logback
 
     testCompile 'junit:junit-dep:' + libraryVersions.junit
     testCompile 'org.hamcrest:hamcrest-library:' + libraryVersions.hamcrest
@@ -135,3 +138,10 @@ test {
     //maxHeapSize "1g"
     //jvmArgs '-server', '-Xmx1g', '-XX:MaxPermSize=256m'
 }
+
+
+tasks['checkstyleBddTest'].enabled = false
+tasks['checkstyleTest'].enabled = false
+tasks['checkstyleIntegrationTest'].enabled = false
+tasks['checkstyleTest'].enabled = false
+

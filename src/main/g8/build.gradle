@@ -62,7 +62,7 @@ jar {
         }
     }
     manifest {
-        attributes("Main-Class": "$group.Main" )
+        attributes("Main-Class": "$group.Main$" )
     }
 }
 

@@ -1,4 +1,4 @@
-package $group__packaged;format="lower"$;
+package $group$;
 
 public class Main {
 

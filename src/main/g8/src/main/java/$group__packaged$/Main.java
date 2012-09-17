@@ -1,12 +1,19 @@
 package $group$;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class Main {
+
+    private static Logger logger = LoggerFactory.getLogger(Main.class);
 
     /**
      * @param args
      */
     public static void main(String[] args) {
-        System.out.println("Hello World");
+        logger.info("Started Main...");
+        // TODO Auto-generated method stub
+
     }
 
 }

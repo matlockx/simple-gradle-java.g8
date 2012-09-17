@@ -1,12 +1,146 @@
 apply plugin: "java"
-// HA
+apply plugin: 'checkstyle'
+apply plugin: 'findbugs'
+
 version = "$version$"
 group = "$group$"
 
-def gradleWrapperVersion = "$gradle_version$"
+// additional source code dirs for bdd-tests and integration-tests 
+def bddSourceDir = 'src/bdd-test/java'
+def bddResourceDir = 'src/bdd-test/resources'
 
+def integrationTestSourceDir = 'src/integration-test/java'
+def integrationTestResourceDir = 'src/integration-test/resources'
+
+project.ext.createFatJar = project.hasProperty('createFatJar') && ['on', 'true'].contains(project.properties.createFatJar)
+project.ext.useIntegrationTests = project.hasProperty('integrationTest') && ['on', 'true'].contains(project.properties.integrationTest)
+project.ext.useBddTests = project.hasProperty('bddTest') && ['on', 'true'].contains(project.properties.bddTest)
+project.ext.useCodeCoverage = project.hasProperty('coverage') && ['on', 'true'].contains(project.properties.coverage)
+project.ext.useFindbugs = project.hasProperty('findbugs') && ['on', 'true'].contains(project.properties.findbugs) && !(project.hasProperty('ignoreFindbugs'))
+
+def gradleWrapperVersion = "$gradle_version$"
+task wrapper(type: Wrapper) { gradleVersion = gradleWrapperVersion }
+
+// remove junit from compile config. We don't want junit in our fatJar...
+configurations { compile.exclude module: 'junit' }
+
+// repo
 repositories {
     mavenCentral()
 }
 
-task wrapper(type: Wrapper) { gradleVersion = gradleWrapperVersion }
+// some global library versions for out dependencies
+project.ext.libraryVersions = [
+                junit: '4.10', 
+                mockito: '1.9.0', 
+                logback: '1.0.7',
+                hamcrest: '1.3.RC2',
+                cobertura: '1.9.3'
+            ]
+
+
+
+dependencies{    
+    compile 'ch.qos.logback:logback-core:' + libraryVersions.logback
+
+    testCompile 'junit:junit-dep:' + libraryVersions.junit
+    testCompile 'org.hamcrest:hamcrest-library:' + libraryVersions.hamcrest
+    testCompile "org.mockito:mockito-core:" + libraryVersions.mockito
+
+    testCompile "info.cukes:cucumber-java:1.0.9"
+    testCompile "info.cukes:cucumber-junit:1.0.9"
+}
+
+
+jar {
+    dependsOn configurations.runtime
+    if (project.ext.createFatJar){
+        from {
+            configurations.runtime.collect {
+                it.isDirectory() ? it : zipTree(it)
+            }
+        }
+    }
+    manifest {
+        attributes("Main-Class": "$group.Main" )
+    }
+}
+
+configurations {
+        integrationTestCompile { extendsFrom testCompile }
+        integrationTestRuntime { extendsFrom integrationTestCompile, testRuntime }
+
+        bddTestCompile { extendsFrom testCompile }
+        bddTestRuntime { extendsFrom bddTestCompile, testRuntime }
+
+        demoCompile { extendsFrom testCompile }
+        demoRuntime { extendsFrom demoCompile, runtime }
+
+    }
+    sourceSets {
+        integrationTest {
+            java.srcDir file(integrationTestSourceDir)
+            resources.srcDir file(integrationTestResourceDir)
+            compileClasspath = sourceSets.main.output + sourceSets.test.output + configurations.integrationTestCompile
+            runtimeClasspath = output + compileClasspath + configurations.integrationTestRuntime
+        }
+
+        bddTest {
+            java.srcDir file(bddSourceDir)
+            resources.srcDir file(bddResourceDir)
+            compileClasspath = sourceSets.main.output + sourceSets.test.output + configurations.bddTestCompile
+            runtimeClasspath = output + compileClasspath + configurations.bddTestRuntime
+        }
+
+        demo {
+            java.srcDir file(demoSourceDir)
+            resources.srcDir file(demoResourceDir)
+            compileClasspath = sourceSets.main.output + sourceSets.test.output + configurations.demoCompile
+            runtimeClasspath = output + compileClasspath + configurations.demoRuntime
+        }
+    }
+
+
+test {
+    if (project.ext.useCodeCoverage) {
+        apply from: "${projectDir}/cobertura.gradle"
+    }
+
+
+    if (project.ext.useIntegrationTests) {
+
+        sourceSets.test.java.srcDirs += integrationTestSourceDir
+        sourceSets.test.resources.srcDirs += integrationTestResourceDir
+    }
+
+    // only apply bdd task when features are available
+    if(new File("${projectDir}/src/bdd-test/resources").exists()){
+        apply from: "${projectDir}/bdd.gradle"
+    }
+
+
+    //listening to test execution events
+    beforeTest { descriptor ->
+        logger.lifecycle("\t\t" + descriptor.getName())
+    }
+    afterTest { descriptor, result ->
+        if (result.failedTestCount > 0) {
+            logger.lifecycle("☹ " * 40)
+        }
+    }
+    beforeSuite { descriptor ->
+        logger.lifecycle("Suite " + descriptor)
+        if (descriptor.getClassName() != null)
+            logger.lifecycle("\tClass " + descriptor.getClassName() + " {")
+
+    }
+    afterSuite { descriptor ->
+        if (descriptor.getClassName() != null) {
+            logger.lifecycle("\t}")
+        }
+
+    }
+    testLogging.showStandardStreams = true
+    //maxHeapSize "1g"
+    //jvmArgs '-server', '-Xmx1g', '-XX:MaxPermSize=256m'
+}

@@ -1,0 +1,28 @@
+    /**
+ * Run all tests (includes integration tests)
+ */
+task bddTest(description: 'Runs the bdd cucumber and junit tests.') {
+    dependsOn assemble, compileBddTestJava, processBddTestResources, bddTestClasses
+    doLast {
+
+        project.ext.htmlFormat = "html:${project.buildDir}/reports/tests/bddTest-report"
+        project.ext.junitFormat = "junit:${project.buildDir}/reports/tests/bddTest-report/junit.xml"
+        javaexec {
+            main = "cucumber.cli.Main"
+            failOnError = true
+            classpath =files(sourceSets.bddTest.output.classesDir) +
+                    sourceSets.bddTest.compileClasspath + sourceSets.bddTest.runtimeClasspath
+            args = [
+                '-f',
+                project.ext.htmlFormat,
+                '-f',
+                'pretty',
+                '-f',
+                project.ext.junitFormat,
+                '--glue',
+                'de.xplosion',
+                'src/bdd-test/resources'
+            ]
+        }
+    }
+}

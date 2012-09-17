@@ -74,10 +74,6 @@ configurations {
 
         bddTestCompile { extendsFrom testCompile }
         bddTestRuntime { extendsFrom bddTestCompile, testRuntime }
-
-        demoCompile { extendsFrom testCompile }
-        demoRuntime { extendsFrom demoCompile, runtime }
-
     }
     sourceSets {
         integrationTest {
@@ -92,13 +88,6 @@ configurations {
             resources.srcDir file(bddResourceDir)
             compileClasspath = sourceSets.main.output + sourceSets.test.output + configurations.bddTestCompile
             runtimeClasspath = output + compileClasspath + configurations.bddTestRuntime
-        }
-
-        demo {
-            java.srcDir file(demoSourceDir)
-            resources.srcDir file(demoResourceDir)
-            compileClasspath = sourceSets.main.output + sourceSets.test.output + configurations.demoCompile
-            runtimeClasspath = output + compileClasspath + configurations.demoRuntime
         }
     }
 

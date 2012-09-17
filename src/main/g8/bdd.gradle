@@ -2,7 +2,7 @@
  * Run all tests (includes integration tests)
  */
 task bddTest(description: 'Runs the bdd cucumber and junit tests.') {
-    dependsOn assemble, compileBddTestJava, processBddTestResources, bddTestClasses
+    dependsOn 'assemble', 'compileBddTestJava', 'processBddTestResources', 'bddTestClasses'
     doLast {
 
         project.ext.htmlFormat = "html:\${project.buildDir}/reports/tests/bddTest-report"

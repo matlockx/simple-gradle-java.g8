@@ -13,7 +13,6 @@ def integrationTestResourceDir = 'src/integration-test/resources'
 
 project.ext.createFatJar = project.hasProperty('createFatJar') && ['on', 'true'].contains(project.properties.createFatJar)
 project.ext.useIntegrationTests = project.hasProperty('integrationTest') && ['on', 'true'].contains(project.properties.integrationTest)
-project.ext.useBddTests = project.hasProperty('bddTest') && ['on', 'true'].contains(project.properties.bddTest)
 project.ext.useCodeCoverage = project.hasProperty('coverage') && ['on', 'true'].contains(project.properties.coverage)
 project.ext.useFindbugs = project.hasProperty('findbugs') && ['on', 'true'].contains(project.properties.findbugs) && !(project.hasProperty('ignoreFindbugs'))
 

@@ -26,12 +26,16 @@ cd into your new project dir
 ###BDD with cucumber
 Add features and sources to src/bdd-test/...
 Then run
+
     ./gradle bddTest
+
 A dummy test is already there.
 ###Integration tests
 Add junit tests to src/integration-test/java
 Then run
+
     ./gradle build -PuseIntegrationTest=true
+
 ###Cobertura
     ./gradlew build -PuseCodeCoverage=true
 ###FindBugs

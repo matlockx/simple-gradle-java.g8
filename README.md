@@ -16,7 +16,9 @@ Includes
 Install [giter8][g8], then:
 
     g8 matlockx/simple-gradle-java
+
 cd into your new project dir
+
     chmod +x gradlew
     ./gradlew build
 

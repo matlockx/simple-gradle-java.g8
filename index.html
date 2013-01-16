@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Simple-gradle-java.g8 : " />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Simple-gradle-java.g8</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/matlockx/simple-gradle-java.g8">View on GitHub</a>
+
+          <h1 id="project_title">Simple-gradle-java.g8</h1>
+          <h2 id="project_tagline"></h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/matlockx/simple-gradle-java.g8/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/matlockx/simple-gradle-java.g8/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>simple-gradle-java</h1>
+
+<p>A <a href="http://github.com/n8han/giter8#readme">giter8</a> template for java gradle] applications.</p>
+
+<p>Includes</p>
+
+<ul>
+<li>findbugs</li>
+<li>cobertura</li>
+<li>checkstyle</li>
+<li>integration-test source set</li>
+<li>bdd-test source set with cucumber</li>
+<li>fatJar support</li>
+</ul><h2>Usage</h2>
+
+<p>Install <a href="http://github.com/n8han/giter8#readme">giter8</a>, then:</p>
+
+<pre><code>g8 matlockx/simple-gradle-java
+</code></pre>
+
+<p>cd into your new project dir</p>
+
+<pre><code>chmod +x gradlew
+./gradlew build
+</code></pre>
+
+<h2>Gradle Options</h2>
+
+<h3>BDD with cucumber</h3>
+
+<p>Add features and sources to src/bdd-test/...
+Then run</p>
+
+<pre><code>./gradle bddTest
+</code></pre>
+
+<p>A dummy test is already there.</p>
+
+<h3>Integration tests</h3>
+
+<p>Add junit tests to src/integration-test/java
+Then run</p>
+
+<pre><code>./gradle build -PuseIntegrationTest=true
+</code></pre>
+
+<h3>Cobertura</h3>
+
+<pre><code>./gradlew build -PuseCodeCoverage=true
+</code></pre>
+
+<h3>FindBugs</h3>
+
+<pre><code>./gradlew build -PuseFindbugs=true
+</code></pre>
+
+<h3>FatJar</h3>
+
+<pre><code>./gradlew build -PcreateFatJar=true
+</code></pre>
+
+<p>You can also combine these switches.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Simple-gradle-java.g8 maintained by <a href="https://github.com/matlockx">matlockx</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>

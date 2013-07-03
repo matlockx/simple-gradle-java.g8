@@ -20,7 +20,7 @@ task bddTest(description: 'Runs the bdd cucumber and junit tests.') {
                 '-f',
                 project.ext.junitFormat,
                 '--glue',
-                'de.xplosion',
+                '$group$',
                 'src/bdd-test/resources'
             ]
         }
